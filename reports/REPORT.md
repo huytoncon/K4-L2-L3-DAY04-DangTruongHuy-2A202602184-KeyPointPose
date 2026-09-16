@@ -164,17 +164,22 @@ nhiều hơn cả `box_mAP50-95`.)
    17 điểm giải phẫu bên trong đòi hỏi độ chính xác cao hơn nhiều, đặc biệt ở khớp hay bị
    che (cổ tay, mắt cá) - đúng nhóm khớp có `%v=1` cao trong chính visibility report của bạn.
 
-3. *(Cần mở ảnh model dự đoán trên tập test trong notebook - phần "visualize" - để chọn
-   một ca cụ thể và gọi tên đúng 1 trong 4 loại lỗi. Cho mình biết ảnh nào bạn thấy model
-   đoán sai rõ nhất, mình sẽ giúp phân loại.)*
+3. ảnh test-02 , đoán nhầm con chim thành người
 
-4. *(Notebook có bước so OKS giữa nhãn của bạn và dự đoán model trên tập test - cần đọc
-   kết quả đó để trả lời, hiện `outputs/eval_model.json` chỉ chứa mAP tổng hợp, không có
-   OKS từng ảnh. Nếu notebook có in ra danh sách/ảnh, gửi mình xem cùng.)*
+4. train-14, tôi đúng , vì đã xác định chính xác vị trí các điểm đã so sánh với partner
 
-5. *(Trả lời sau câu 4 - so ảnh OKS thấp nhất giữa bạn-vs-model với ảnh OKS thấp nhất giữa
-   bạn-vs-gold trong `outputs/eval_vs_gold.json`. Hiện tại `train_04.jpg` người #1 đang là
-   ca thấp nhất so với gold - OKS 0.641 - đáng để đối chiếu trước.)*
+5. **Không trùng.** Ảnh tôi gán tệ nhất so với gold là `train_04.jpg` (người đội mũ bảo
+   hiểm full-face, OKS 0.641) - lý do là mũ che kín hoàn toàn hai tai, gold vẫn tính
+   `v=2` (nhìn thấy) trong khi tôi để `v=0` (không gán) vì nghĩ tai không còn tồn tại
+   trong khung khi bị vật cứng che hết. Trong khi đó ảnh model đoán lệch nhiều nhất so
+   với nhãn của tôi lại là `train_14.jpg` - và ở đó nhãn của tôi được xác nhận đúng (câu 4).
+
+   Hai ảnh khác nhau cho thấy hai loại khó khăn khác nhau: `train_04` khó vì **ranh giới
+   quy ước visibility** (vật cứng che hoàn toàn vs che một phần) chứ không phải ảnh khó
+   nhìn - đây là lỗi gán nhãn, có thể sửa bằng cách thống nhất lại guideline. Còn
+   `train_14` khó với **model** dù nhãn đã đúng, nên nhiều khả năng đến từ giới hạn của
+   việc fine-tune trên chỉ 20 ảnh (pose người khó, ít mẫu tương tự để học) chứ không phải
+   do chất lượng nhãn.
 
 ## 5. Một rule evidence bạn đã dùng
 

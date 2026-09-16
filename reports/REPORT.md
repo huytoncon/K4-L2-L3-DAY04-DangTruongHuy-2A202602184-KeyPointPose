@@ -131,30 +131,43 @@ Không chỉ ghi “cẩn thận hơn khi gán”. -->
 
 | Chỉ số | yolo26n-pose gốc | Sau fine-tune | Chênh |
 | --- | ---: | ---: | ---: |
-| pose_mAP50 | | | |
-| pose_mAP50-95 | | | |
-| pose_precision | | | |
-| pose_recall | | | |
-| box_mAP50-95 | | | |
+| pose_mAP50 | 0.8450 | 0.8450 | 0.0000 |
+| pose_mAP50-95 | 0.6853 | 0.6908 | +0.0055 |
+| pose_precision | 0.9734 | 0.9792 | +0.0058 |
+| pose_recall | 0.8462 | 0.8462 | 0.0000 |
+| box_mAP50-95 | 0.8119 | 0.8041 | -0.0078 |
+
+(Ghi thêm ngoài bảng chuẩn: `box_mAP50` giảm từ 0.9785 xuống 0.9600, chênh -0.0185 - giảm
+nhiều hơn cả `box_mAP50-95`.)
 
 ### Trả lời năm câu hỏi ở cuối notebook
 
 > Mỗi câu cần trỏ tới ảnh/chỉ số cụ thể. Một con số thấp không tự chứng minh nhãn sai;
 > kiểm lại bằng bằng chứng thị giác và kết quả gold.
 
-1. `pose_mAP50-95` thay đổi bao nhiêu? Nếu nó giảm, 20 ảnh của bạn dạy được model
-   điều gì mà COCO chưa dạy, và nó làm hỏng điều gì?
+1. `pose_mAP50-95` **tăng nhẹ** +0.0055 (0.6853 -> 0.6908), không giảm. `pose_precision`
+   cũng tăng +0.0058 trong khi `pose_recall` đứng yên (0.8462 -> 0.8462) - tức là fine-tune
+   trên 20 ảnh giúp model bớt đoán sai vị trí khớp một chút ở những ca nó đã tìm ra người,
+   chứ không giúp tìm thêm được người/khớp mới. Vì chỉ 20 ảnh nên mức tăng rất nhỏ, không
+   nên diễn giải là "model đã tốt hơn hẳn".
 
-2. `box_mAP` và `pose_mAP` chênh nhau bao nhiêu? Model tìm *người* dễ hơn hay tìm
-   *khớp* dễ hơn? Vì sao?
+2. Sau fine-tune: `box_mAP50-95` = 0.8041, `pose_mAP50-95` = 0.6908 - chênh **0.1133**.
+   Model tìm **người** (bounding box) dễ hơn tìm **khớp** rõ rệt. Hợp lý về mặt bài toán:
+   xác định một hộp bao quanh người là tác vụ thô (chỉ cần 4 số), trong khi định vị đúng
+   17 điểm giải phẫu bên trong đòi hỏi độ chính xác cao hơn nhiều, đặc biệt ở khớp hay bị
+   che (cổ tay, mắt cá) - đúng nhóm khớp có `%v=1` cao trong chính visibility report của bạn.
 
-3. Một ảnh test model đoán sai - gọi tên lỗi theo bốn loại của slide 43
-   (lệch nhẹ / đảo trái/phải / nhầm người / trượt hẳn):
+3. *(Cần mở ảnh model dự đoán trên tập test trong notebook - phần "visualize" - để chọn
+   một ca cụ thể và gọi tên đúng 1 trong 4 loại lỗi. Cho mình biết ảnh nào bạn thấy model
+   đoán sai rõ nhất, mình sẽ giúp phân loại.)*
 
-4. Ảnh nào có OKS thấp nhất giữa nhãn của bạn và model? Ai đúng, và bạn dựa vào đâu?
+4. *(Notebook có bước so OKS giữa nhãn của bạn và dự đoán model trên tập test - cần đọc
+   kết quả đó để trả lời, hiện `outputs/eval_model.json` chỉ chứa mAP tổng hợp, không có
+   OKS từng ảnh. Nếu notebook có in ra danh sách/ảnh, gửi mình xem cùng.)*
 
-5. Ảnh bạn gán tệ nhất có *cũng* là ảnh model đoán tệ nhất không? Nếu có, điều đó
-   nói gì về bức ảnh đó?
+5. *(Trả lời sau câu 4 - so ảnh OKS thấp nhất giữa bạn-vs-model với ảnh OKS thấp nhất giữa
+   bạn-vs-gold trong `outputs/eval_vs_gold.json`. Hiện tại `train_04.jpg` người #1 đang là
+   ca thấp nhất so với gold - OKS 0.641 - đáng để đối chiếu trước.)*
 
 ## 5. Một rule evidence bạn đã dùng
 

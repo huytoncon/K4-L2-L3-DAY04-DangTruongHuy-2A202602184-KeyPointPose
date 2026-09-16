@@ -28,10 +28,7 @@ Chúng có đúng là những khớp bạn thấy khó gán nhất không? Nếu
 
 <!-- Trả lời 2–4 câu. Phân biệt "hay bị che" với "khó xác định vị trí giải phẫu"; nêu bằng
 chứng nhìn thấy thay vì chỉ nêu cảm giác. -->
-
-*(Điền câu trả lời của bạn ở đây - ví dụ: hông đúng là khó nhất vì gần như không nhìn thấy
-được trên người mặc quần áo, phải ước lượng theo giải phẫu; còn tai/cổ tay thường bị tóc,
-mũ bảo hiểm hoặc thân người che một phần.)*
+đúng, vì không xác định hay phán đoán được vị trí.
 
 ## 2. Chấm với gold
 
@@ -168,7 +165,7 @@ nhiều hơn cả `box_mAP50-95`.)
 
 4. train-14, tôi đúng , vì đã xác định chính xác vị trí các điểm đã so sánh với partner
 
-5. **Không trùng.** Ảnh tôi gán tệ nhất so với gold là `train_04.jpg` (người đội mũ bảo
+5.  Ảnh tôi gán tệ nhất so với gold là `train_04.jpg` (người đội mũ bảo
    hiểm full-face, OKS 0.641) - lý do là mũ che kín hoàn toàn hai tai, gold vẫn tính
    `v=2` (nhìn thấy) trong khi tôi để `v=0` (không gán) vì nghĩ tai không còn tồn tại
    trong khung khi bị vật cứng che hết. Trong khi đó ảnh model đoán lệch nhiều nhất so

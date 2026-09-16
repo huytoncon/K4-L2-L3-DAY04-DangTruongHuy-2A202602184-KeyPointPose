@@ -108,21 +108,28 @@ Xảy ra ở `train_14.jpg`, người #2 (OKS chỉ 0.294 trước rework, thấ
 
 ## 3. Kiểm chéo
 
-Bạn cùng nhóm: ______
+Bạn cùng nhóm: partner (folder `train-partner`)
 
-Khớp lệch `%v=1` nhiều nhất giữa hai bảng đếm:
+Khớp lệch `%v=1` nhiều nhất giữa hai bảng đếm (nguồn: `reports/visibility_compare.md`,
+chạy trực tiếp trên 20 file `.txt` gốc của cả hai bên):
 
 | Khớp | Bạn | Họ | Lệch | Nguyên nhân (guideline hay gán sai?) |
 | --- | ---: | ---: | ---: | --- |
-| | | | | |
-| | | | | |
+| left_ear | 18% | 50% | 32 | Guideline chưa rõ ở thời điểm gán: mình dùng `v=0` cho tai bị tóc/mũ che một phần (coi là “không đoán được vị trí”), partner dùng `v=1`. Đã thống nhất lại đúng luật lớp trong `GUIDELINE_MINI.md` mục 2 (phải là `v=1`) |
+| right_ear | 11% | 36% | 25 | Cùng nguyên nhân với left_ear |
+
+Ngoài bảng trên, tổng `v0_outside` của mình cao hơn hẳn partner (102 so với 33 trên cùng
+28-29 skeleton) - không chỉ ở tai mà cả nhóm khớp chân (gối, mắt cá). Qua đối chiếu, đây là
+lỗi **gán sai** của mình (nhầm “không chắc vị trí chính xác” thành “ra khỏi khung”), không
+phải khác biệt guideline hợp lệ - xem chi tiết Ca 1/2 ở mục 3 của `GUIDELINE_MINI.md`.
 
 Luật mới đã bổ sung vào `GUIDELINE_MINI.md` sau khi thống nhất:
 
 <!-- Viết một rule kiểm chứng được: điều kiện nhìn thấy/căn cứ vị trí → chọn v=1 hoặc v=0.
 Không chỉ ghi “cẩn thận hơn khi gán”. -->
 
--
+- “Tai bị tóc hoặc mũ bảo hiểm che một phần” -> luôn `v=1` + đặt chấm ước lượng theo hình
+  dạng đầu, không dùng `v=0` (xem `GUIDELINE_MINI.md` mục 2, dòng 2).
 
 ## 4. Model
 
@@ -177,3 +184,16 @@ khớp, bằng chứng nhìn thấy và lý do chọn trạng thái đó trong 3
 <!-- Cấu trúc gợi ý: (1) train_XX + người thứ mấy + keypoint; (2) căn cứ thị giác như phần cơ
 thể liền kề, trang phục hoặc vật che; (3) vì sao khớp còn trong khung (v=1) hay đã ra khỏi
 khung (v=0). -->
+
+**`train_04.jpg`, người #2, khớp `right_wrist`, `left_hip`, `right_hip`, `left_knee`,
+`right_knee`, `left_ankle`, `right_ankle`.** Người này chỉ còn thấy từ vai/khuỷu tay trở
+lên trong khung hình - phần thân dưới bị cắt hẳn ở mép ảnh. Bằng chứng không chỉ ở mắt
+thường: toạ độ gốc trong file COCO của các khớp này nằm **ngoài kích thước ảnh thật**
+(ví dụ `right_wrist` ở `x = -3.0`, và hai mắt cá ở `y = 542.08` trong khi ảnh chỉ cao
+`457px`) - tức là khi kéo thả trong CVAT, các điểm này đã bị kéo ra ngoài canvas. Vì khớp
+thực sự không còn nằm trong vùng ảnh (không phải chỉ "khó thấy" hay "bị che bởi vật thể"),
+mình chọn `v=0` và không đặt chấm - đúng ranh giới của luật lớp là "còn trong khung hay
+không", chứ không phải "có đoán được vị trí hay không".
+
+*(Nếu ca này không đúng với ký ức thực tế lúc bạn gán - ví dụ bạn nhớ mình gán khác đi -
+sửa lại đoạn trên cho khớp với quyết định thật của bạn.)*
